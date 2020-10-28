@@ -51,6 +51,6 @@ I updated the Delivery Status from picked_up to Dispatched.
 
 ![](images/status_update.png)
 
-Then, this is the mail a customer will received.
+Then, this is the mail a customer will receive.
 
 ![](images/Email_notification.png)
