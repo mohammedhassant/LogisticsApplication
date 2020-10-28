@@ -47,7 +47,7 @@ Then i created the Dashboard with Priority Based and Delivery Status Based.
 
 I created a Trigger to make our work automate, which means whenever I updates the Delivery Status to the next stage then it automatically sends a mail to the customer's mail Id. To Update the customer every time.
 
-I updated the Delivery Status from picked_up to Dispatched.
+I updated the Delivery Status from Ready To Pick to Dispatched.
 
 ![](images/status_update.png)
 
