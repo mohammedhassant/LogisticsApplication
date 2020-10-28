@@ -1,0 +1,42 @@
+trigger quote_creation on Opportunity (after insert) {
+	
+    List<Quote> qu = new List<Quote>();
+    //List<Location__c> lo = [Select Name,Cost__c From Location__c];
+    //List<Location__c> loca = [Select Name,Cost__c From Location__c];
+    List<Location__c> loca = new List<Location__c>();
+    loca = [Select Name,Cost__c From Location__c];
+    
+    for(Opportunity op :Trigger.New){
+        Account ac = [Select Id,Name,Pickup_Location__c,Delivery_Address__c,CreatedBy.Name from Account Where Id = :op.AccountId];
+        String pickDeli_1 = ac.Pickup_Location__c+'_'+ac.Delivery_Address__c;
+        String pickDeli_2 = ac.Delivery_Address__c+'_'+ac.Pickup_Location__c;
+        //List<String> stList = new List<String>{ac.Pickup_Location__c+'_'+ac.Delivery_Address__c};
+        Decimal cost;
+        Integer cnt = 0;
+        for(Integer i=0 ;i<loca.size(); i++){
+            if(pickDeli_1 == loca[i].Name || pickDeli_2 == loca[i].Name){
+                cost = loca[i].Cost__c;
+                break;
+            }
+        }
+        //if(pickDeli == lo.Name){
+          //  cost = lo.Cost__c;
+        //}
+        DateTime dT = system.now();
+        Date myDate = date.newInstance(dT.year(), dT.month(), dT.day()+20);
+        
+        
+    	qu.add(new Quote(
+        	Name = ac.Name+ '_' +'Quotes',
+            ExpirationDate = myDate,
+            BillingCity = ac.Pickup_Location__c,
+            ShippingCity = ac.Delivery_Address__c,
+            ShippingHandling = cost,
+            Status = 'Draft',
+            BillingName = ac.CreatedBy.Name,
+            ShippingName = ac.Name,
+            OpportunityId = op.Id   
+        ));
+    }
+    insert qu;
+}

@@ -1,0 +1,15 @@
+trigger UpdateLocation on Delivery__c (before update) {
+	
+    //List<Delivery__c> d = new List<Delivery__c>();
+    
+    for(Delivery__c deli :Trigger.New){
+    	List<Delivery__c> delivery = [Select Account__r.Name,Drop_Location__c from Delivery__c Where Id=:deli.Id];
+     	List<Quote> q = [Select Account.Name,ShippingCity from Quote Where Account.Name = :delivery[0].Account__r.Name];  
+        String Drop_Point = q[0].ShippingCity;
+        //d.add(deli.Drop_Location__c = Drop_Point);
+        //deli.Drop_Location__c = Drop_Point;
+        for(Integer i=0;i<trigger.new.size();i++){
+            trigger.new[i].Drop_Location__c = Drop_Point;
+        }
+    }
+}

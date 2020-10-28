@@ -1,0 +1,15 @@
+#include<stdio.h> /* std means standard i-input o-output */ 
+
+int main(){
+	int number1,number2, sum ;	/* we are initializing three variables number1,number2,sum these are integer datatype becoz we put(int) there,there are many
+					* data types float, decimal, double etc.. */
+
+	printf("Enter two Numbers: ");  /* This will print in the console, whatever write within this "". */
+	scanf("%d %d", &number1, &number2); /* This will read two integer number (%d for integer) and for float(%f) */
+
+	sum = number1 + number2 ;  /* we initialize sum in upper line and we are storing the two number in sum which is integer */
+
+	printf("%d + %d = %d", number1, number2, sum);  /*Here we print value */
+	return 0;
+
+}

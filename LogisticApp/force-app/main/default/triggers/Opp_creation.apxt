@@ -1,0 +1,14 @@
+trigger Opp_creation on Account (after insert) {
+	
+    List<Opportunity> opp = new List<Opportunity>();
+    
+    for(Account a :Trigger.New){
+        opp.add(New Opportunity(
+        	AccountId = a.Id,
+            Name = a.Name + '_' + 'Opportunity',
+            CloseDate = system.today(),
+            StageName = 'Qualification'
+        ));
+    }
+    insert opp;
+}

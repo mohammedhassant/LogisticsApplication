@@ -1,0 +1,45 @@
+public class EmailManager {
+    public static void sendMail(List<Delivery__c> deliv){
+   
+    // Step 0: Create a master list to hold the emails we'll send
+    List<Messaging.SingleEmailMessage> mails =
+  		new List<Messaging.SingleEmailMessage>();
+        for(Delivery__c deli : deliv){
+ 		   Delivery__c delivery = [Select Name,Owner.Name,Driver__r.Name,Account__r.Name,Delivery_Status__c,Driver__r.Drivers_Phone_Number__c
+                     From Delivery__c Where Id = :deli.Id];
+        
+      // Step 1: Create a new Email
+      Messaging.SingleEmailMessage mail =  new Messaging.SingleEmailMessage();
+        
+      // Step 2: Set list of people who should get the email
+      List<String> sendTo = new List<String>();
+      sendTo.add('studentuser028@gmail.com');
+      mail.setToAddresses(sendTo);
+        
+      // Step 3: Set who the email is sent from
+      mail.setReplyTo('mohammedhassancs@gmail.com');
+      mail.setSenderDisplayName('mht Strore');
+        
+     // Step 4. Set email contents - you can use variables!
+      mail.setSubject('Status Updated of your Ordered product');
+      String body = 'Dear ' + delivery.Account__r.Name+',' +'<br/>'+
+		'<br/>'+	
+          'You Ordered the Product, which is delivered Shortly and this is the current status of your product  '+'<b>'+ delivery.Delivery_Status__c +'</b>' +'<br/>'+
+          '<br/>'+
+          'Driver is assigned to delivery this product: '+ '<br/>'+
+          'Name: '+ delivery.Driver__r.Name+ '<br/>'+
+          'Phone:  '+ delivery.Driver__r.Drivers_Phone_Number__c+ '<br/>'+
+          '<br/>'+
+          'Thanks For Joining Us'+ '<br/>'+
+          delivery.Owner.Name
+          ;
+        
+      mail.setHtmlBody(body);    
+      
+        
+      // Step 5. Add your email to the master list
+      mails.add(mail);
+      Messaging.sendEmail(mails);
+    }
+    }
+}

@@ -1,0 +1,33 @@
+public class Deliveries_Data {
+	public List<Delivery__c> Deli{get; private set;}
+    public List<Delivery_Item__c> Deli1 {get; private set;}
+    public List<Quote> quote{get; private set;}
+    public List<Grand__c> grand{get; private set;}
+    public List<Decimal> decim {get; private set;}
+    public decimal deci {get; private set;}
+    public Id RecordId {get;set;}
+    
+    //decimal deci=0;
+    //'a022w00000H3ooyAAB'
+    public Deliveries_Data(ApexPages.StandardController controller){
+        //Id id=ApexPages.currentPage().getParameters().get('id');
+         RecordId  = ApexPages.currentPage().getParameters().get('id');
+        this.Deli = [Select Name,Owner.Name,Driver__r.Name,Account__r.Name,Account__r.Location__c,Drop_Location__c
+                     From Delivery__c Where Id = :RecordId];
+        this.Deli1 = [Select Name,Quantity__c,Unit_Price__c,Total_Price__c From Delivery_Item__c where Delivery__r.Name = :Deli[0].Name];
+        
+		this.quote = [Select Name,ShippingHandling from Quote where Name = :Deli[0].Account__r.Name+'_'+'Quotes'];    
+        this.deci = quote[0].ShippingHandling;
+        for(Integer i=0; i<Deli1.size();i++){
+            this.deci += Deli1[i].Total_Price__c;
+        }
+        //decim.add(deci);
+        //decim.add(deci);
+        //this.deci.add(quote[0].ShippingHandling + );
+        //for(Integer i=0; i<Deli1.size();i++){
+          //  this.deci.add(Deli1[i].Total_price__c);
+        //}
+		//this.deci.add(quote[0].ShippingHandling);        
+    	
+    }
+}

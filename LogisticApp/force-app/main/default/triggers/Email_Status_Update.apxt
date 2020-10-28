@@ -1,0 +1,3 @@
+trigger Email_Status_Update on Delivery__c (after update) {
+	EmailManager.sendMail(Trigger.New);
+}

@@ -1,0 +1,178 @@
+<apex:page showHeader="false" sidebar="false" renderAs="pdf" standardStylesheets="false" applyHtmlTag="false" standardController="Delivery__c" extensions="Deliveries_Data">
+	<head>
+    <style>
+        body {
+                font-family: sans-serif;
+                font-size: 14px;
+                position: relative;
+            }
+            
+            h1,
+            h2,
+            h3,
+            h4,
+            h5 {
+                margin: 0;
+            }
+            
+            h1 {
+                font-size: 18px;
+            }
+            
+            h2 {
+                font-size: 16px;
+            }
+            
+            h3 {
+                font-size: 14px;
+            }
+            
+            p,
+            td {
+                font-size: 12px;
+            }
+    	.invoice__header {
+                display: inline-block;
+                width: %;50
+                margin: 0px 0 10px 0;
+            }
+        .invoice__title {
+                float: left;
+                width: 80%;
+        		
+            }
+        .invoice__address{
+        		width: 50%;
+        		float: left;
+        }
+        .invoice__address h4{
+        		margin-bottom: 5px;
+        }
+        .invoice__address span{
+        		display: block;	
+        }
+        .invoice__address--left{
+        		text-align: left;
+        		width: 60%;
+        }
+        .invoice__address--right{
+        		text-align:right;
+        		width: 80%;
+        }
+        .invoice__oli {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                float: left;
+                width: 100%;
+            }
+    </style>
+    </head>
+    <div class="invoice__header">
+        <apex:image url="{!$Resource.logo}" width="70" height="50" />
+    </div>
+    <div class="invoice__title">
+        <h1>Invoice</h1>
+    </div>
+    <div class="invoice__contact">
+        <div class="invoice__address invoice__address--left">
+            <h4>Billed To:</h4>
+            <apex:repeat value="{!Deli}" var="D">
+            	<span class="address__line">{!D.Owner.Name}</span>
+            </apex:repeat>
+        </div>
+        <div class="invoice__address invoice__address--right">
+            <h4>Shipped To:</h4>
+            <apex:repeat value="{!Deli}" var="d">
+                <span class="address__line">Shipping Number: {!d.Name}</span>
+            	<span class="address__line">{!d.Account__r.Name}</span>
+                <span class="address__line">{!d.Account__r.Location__c}</span>
+                <span class="address__line">{!d.Drop_Location__c}</span>
+            </apex:repeat>
+        </div>
+    </div>
+    <div class="invoice__oli">
+        <div class="oli__header">
+            <h2>Invoice Summary</h2>
+        </div>
+        <div class="oli__table">
+            <table>
+                <col style="width:40%"></col>
+            	<col style="width:30%"></col>
+                <col style="width:30%"></col>
+                <col style="width:30%"></col>
+				<thead>
+                    <tr>
+                        <td>
+                            <strong>Item</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>Unit Price</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>Quantity</strong>
+                        </td>
+                        <td class="text-right">
+                            <strong>Total</strong>
+                        </td>
+                    </tr>
+                </thead>
+				<tbody>
+					<apex:repeat value="{!Deli1}" var="di">
+                    	<tr>
+                        	<td>{!di.Name}</td>
+                            <td>{!di.Unit_Price__c}</td>
+                            <td>{!di.Quantity__c}</td>
+                            <td>{!di.Total_price__c}</td>
+                        </tr>
+                    </apex:repeat>
+				</tbody>
+			<div class="oli__table">
+				<table>
+                    <col style="width:40%"></col>
+                	<col style="width:5%"></col>
+					<thread>
+						<tr>
+                        	<td><Strong>Driver Name</Strong></td>
+                            <td class="text-center"><strong>Driver Charge</strong></td>
+                        </tr>
+				</thread>
+				<tbody>
+					<apex:repeat value="{!Deli}" var="d">
+                    	<tr>
+                            <td>{!d.Driver__r.Name}</td>
+                        </tr>
+                    </apex:repeat>
+                    <apex:repeat value="{!quote}" var="q">
+                        <right>
+                        <td style="text-align:right">{!q.ShippingHandling}</td></right>
+                    </apex:repeat>
+				</tbody>
+				<div class="oli__table">
+					 
+                     <table>
+                             <col Style="width:40%"></col>
+                         	 <col style="width:5%"></col>
+                    <thread>
+						<tr>
+                            <td class="text-center"><strong>Grand Total</strong></td>
+                        </tr>
+				</thread>
+				<tbody>
+                   <tr><right>
+                            <td style="text-align:right;border-bottom: 6px solid red;font-size:20px;"><apex:outputText value="{!deci}">
+                                </apex:outputText></td>
+                       </right></tr>    
+</tbody>
+                         </table>
+                         
+                    </div>                   
+                </table>                
+			</div>
+            </table>
+        </div>
+    </div>
+    
+</apex:page>
